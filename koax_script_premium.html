@@ -186,7 +186,7 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                        <a href="gate.html" data-koax-gate class="flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold px-6 py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]">
+                        <a href="https://link4m.net/kllcj" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold px-6 py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]">
                             <i class="ph-fill ph-key text-xl"></i>
                             Get Script
                         </a>
@@ -305,7 +305,7 @@
                         </div>
                         <h3 class="text-white font-extrabold text-xl mb-1">Evowars.io</h3>
                         <p class="text-brand-textMuted text-xs mb-4">Thông tin dự án và các cập nhật liên quan đến Evowars.io được đăng trong Discord Koax.</p>
-                        <a href="gate.html" data-koax-gate class="w-full flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold py-2.5 rounded-xl text-sm transition-all">
+                        <a href="https://link4m.net/kllcj" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold py-2.5 rounded-xl text-sm transition-all">
                             <i class="ph-fill ph-download-simple"></i> Download Script Evowars.io
                         </a>
                     </div>
@@ -649,22 +649,5 @@
             revealItems.forEach(item => item.classList.add('is-visible'));
         }
     </script>
-
-<script>
-// Koax access flow: a fresh, unpredictable token is created for every click.
-(function () {
-  function createFlowId() {
-    const bytes = new Uint8Array(16);
-    crypto.getRandomValues(bytes);
-    return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
-  }
-  document.querySelectorAll('a[data-koax-gate]').forEach(link => {
-    link.addEventListener('click', event => {
-      event.preventDefault();
-      location.href = 'gate.html?flow=' + createFlowId();
-    });
-  });
-})();
-</script>
 </body>
 </html>
