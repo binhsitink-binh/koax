@@ -1,0 +1,13 @@
+name = "koax-gate-api"
+main = "worker.js"
+compatibility_date = "2026-10-11"
+
+# Create a KV namespace, then replace the ID below with the real namespace ID.
+[[kv_namespaces]]
+binding = "KOAX_FLOWS"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+[vars]
+# Replace with the exact GitHub Pages origin, e.g. https://USERNAME.github.io
+# For a project page, origin is still usually https://USERNAME.github.io (not /repo).
+ALLOWED_ORIGIN = "https://REPLACE_WITH_YOUR_GITHUB_PAGES_HOST"

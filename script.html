@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#050906">
+<title>Koax Script Center — by binhsitink</title><link rel="icon" type="image/png" href="koax-key-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+:root{color-scheme:dark;--bg:#050906;--panel:rgba(7,18,11,.88);--border:#1b3b27;--green:#63dfa0;--muted:#91a99a;--text:#effaf2}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 8% 8%,rgba(40,150,78,.2),transparent 32%),radial-gradient(ellipse at 92% 90%,rgba(24,100,53,.15),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}.nav{width:min(1120px,calc(100% - 28px));margin:14px auto 0;padding:10px 15px;border:1px solid var(--border);border-radius:999px;background:rgba(5,14,8,.82);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 12px 38px #0005}.brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none}.logo{width:40px;height:40px;border:1px solid #285d3b;border-radius:13px;object-fit:cover;box-shadow:0 0 22px #35c87320}.brand b{font-size:16px;letter-spacing:-.04em}.brand small{display:block;margin-top:3px;color:#86b899;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.back{color:#b6c9bc;text-decoration:none;border:1px solid #284634;border-radius:999px;padding:10px 14px;font-size:12px;font-weight:700}.back:hover{border-color:var(--green);color:white}main{width:min(1040px,calc(100% - 28px));margin:0 auto;padding:58px 0 70px}.hero{text-align:center;margin-bottom:32px}.badge{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid #285a3a;border-radius:999px;background:#102719;color:var(--green);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.hero h1{font-size:clamp(30px,5vw,48px);letter-spacing:-.055em;margin:17px 0 10px}.hero h1 span{color:var(--green)}.hero p{max-width:580px;margin:auto;color:var(--muted);font-size:14px;line-height:1.7}.key-panel{max-width:780px;margin:0 auto 26px;padding:22px;border:1px solid #28573a;border-radius:22px;background:linear-gradient(130deg,#0b1a10,#07100a 72%);box-shadow:0 22px 70px #0005,0 0 45px #35c8730b}.key-head{display:flex;align-items:center;gap:12px;margin-bottom:17px}.key-head img{width:48px;height:48px;object-fit:cover;border-radius:14px}.key-head h2{font-size:16px;margin:0 0 5px}.key-head p{font-size:12px;color:var(--muted);margin:0}.platform-picker{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 12px}.platform-picker .btn{min-width:145px}.key-row{display:flex;gap:10px;align-items:center;border:1px solid #294735;background:#030805;border-radius:13px;padding:11px}.key-row code{flex:1;min-width:0;overflow-wrap:anywhere;font-weight:800;letter-spacing:.05em;color:#e5ffed;padding-left:4px}.btn{border:1px solid transparent;border-radius:11px;padding:12px 15px;font:700 12px Inter,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;cursor:pointer;transition:transform .2s,border-color .2s,background .2s}.btn:hover{transform:translateY(-1px)}.btn-green{background:#61d994;color:#041008}.btn-green:hover{background:#82e5a9}.btn-dark{background:#0c1b11;color:#d9f5e1;border-color:#244631}.btn-dark:hover{border-color:var(--green)}.note{margin:12px 2px 0;color:#a8bba9;font-size:11px;line-height:1.6}.section-title{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:35px 0 14px}.section-title h2{margin:0;font-size:20px;letter-spacing:-.04em}.section-title p{margin:5px 0 0;color:var(--muted);font-size:12px}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{position:relative;overflow:hidden;padding:23px;border:1px solid var(--border);border-radius:20px;background:var(--panel);box-shadow:0 16px 42px #0002;transition:transform .25s,border-color .25s,box-shadow .25s}.card:hover{transform:translateY(-3px);border-color:#36764b;box-shadow:0 20px 50px #0004,0 0 24px #35c8730b}.card-top{display:flex;align-items:center;gap:12px;margin-bottom:17px}.game-logo{width:54px;height:54px;border-radius:15px;object-fit:cover;background:#07100a;border:1px solid #294735}.card h3{font-size:18px;margin:0 0 5px}.status{font-size:10px;color:var(--green);font-weight:800;letter-spacing:.08em;text-transform:uppercase}.card p{font-size:12px;color:var(--muted);line-height:1.7;min-height:40px;margin:0 0 18px}.card-actions{display:flex;gap:9px;flex-wrap:wrap}.card-actions .btn{flex:1}.soon{color:#e5c778}.foot{text-align:center;color:#718778;font-size:10px;margin-top:35px;letter-spacing:.08em}.toast{min-height:18px;color:var(--green);font-size:11px;margin-top:10px}@media(max-width:640px){.nav{border-radius:20px}.brand small{display:none}main{padding-top:38px}.key-panel{padding:17px}.key-row{flex-wrap:wrap}.key-row code{width:calc(100% - 8px);flex-basis:100%;padding:8px 4px}.key-row .btn{flex:1}.cards{grid-template-columns:1fr}.card p{min-height:0}.section-title{align-items:start;flex-direction:column}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+.locked > header,.locked > main{visibility:hidden}.access-check{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:22px;background:radial-gradient(ellipse at 10% 10%,rgba(40,150,78,.2),transparent 32%),#050906}.access-check[hidden]{display:none}.access-card{width:min(430px,100%);padding:30px 24px;text-align:center;border:1px solid #28573a;border-radius:22px;background:#08140c;box-shadow:0 24px 80px #0008}.access-spinner{width:32px;height:32px;margin:20px auto 10px;border:3px solid #244832;border-top-color:#63dfa0;border-radius:50%;animation:access-spin .85s linear infinite}@keyframes access-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.access-spinner{animation:none}}
+</style></head>
+<body class="locked">
+<div id="access-check" class="access-check" role="status" aria-live="polite"><div class="access-card"><img src="koax-key-logo.png" alt="Koax" style="width:54px;height:54px;border-radius:15px;object-fit:cover;border:1px solid #28573a"><h2 style="margin:17px 0 8px;font-size:21px">Đang kiểm tra <span style="color:#63dfa0">quyền truy cập</span></h2><p id="access-message" style="margin:0;color:#91a99a;font-size:12px;line-height:1.7">Đang xác minh mã trình duyệt và trạng thái link…</p><div class="access-spinner" id="access-spinner"></div></div></div>
+<header class="nav"><a class="brand" href="koax_script_premium.html"><img class="logo" src="koax-key-logo.png" alt="Koax key logo"><span><b>Koax <span style="color:var(--green)">Script</span></b><small>by binhsitink</small></span></a><a class="back" href="koax_script_premium.html"><i class="ph ph-arrow-left"></i> Về trang chủ</a></header>
+<main>
+<section class="hero"><span class="badge"><i class="ph-fill ph-key"></i> Koax Script Center</span><h1>Get your <span>Script.</span></h1><p>Quản lý key mẫu và xem trạng thái script của Koax tại một nơi. Trang script chỉ mở sau khi link trung gian được xác minh. Hãy tạo một link mới nếu link đã dùng hoặc hết hạn.</p></section>
+<section class="key-panel"><div class="key-head"><img src="koax-key-logo.png" alt="Koax Key"><div><h2>Script của bạn là</h2><p id="script-description">Chọn nền tảng bên dưới để tiếp tục.</p></div></div><div class="platform-picker" aria-label="Chọn nền tảng script"><a class="btn btn-green" href="https://github.com/binhsitink-binh/loaders/raw/refs/heads/main/Koaxloader.user.js" target="_blank" rel="noopener noreferrer"><i class="ph ph-download-simple"></i> Evowars.io</a><button class="btn btn-dark" id="choose-roblox" type="button"><i class="ph ph-game-controller"></i> Roblox</button></div><div class="key-row"><code id="script-value">Chọn Roblox để hiện script mẫu.</code><button class="btn btn-green" id="copy-script" type="button"><i class="ph ph-copy"></i> Copy Script</button><a class="btn btn-dark" href="key.html"><i class="ph ph-key"></i> Get Key</a></div><div class="note" id="script-note">Evowars.io sẽ mở file script trên GitHub. Roblox hiện đoạn script mẫu để m có thể sao chép.</div><div class="toast" id="copy-status" role="status" aria-live="polite"></div></section>
+<div class="section-title"><div><h2>Script Library</h2><p>Chọn nền tảng để xem tình trạng phát hành.</p></div><span class="badge"><i class="ph ph-shield-check"></i> Koax Official</span></div>
+<section class="cards">
+<article class="card" id="evowars"><div class="card-top"><img class="game-logo" src="evowars.png" alt="Evowars.io" onerror="this.style.display='none'"><div><h3>Evowars.io</h3><span class="status">Theo dõi phát hành</span></div></div><p>Script loader Evowars.io do Koax phát hành. Nhấn nút bên dưới để mở file script chính thức trên GitHub.</p><div class="card-actions"><a class="btn btn-green" href="https://github.com/binhsitink-binh/loaders/raw/refs/heads/main/Koaxloader.user.js" target="_blank" rel="noopener noreferrer"><i class="ph ph-download-simple"></i> Tải Script Evowars.io</a><a class="btn btn-dark" href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer"><i class="ph-fill ph-discord-logo"></i> Discord Koax</a></div></article>
+<article class="card" id="roblox"><div class="card-top"><img class="game-logo" src="roblox.png" alt="Roblox" onerror="this.style.display='none'"><div><h3>Roblox</h3><span class="status soon">Sắp ra mắt</span></div></div><p>Trang script Roblox đang chờ phát hành. Khi có bản chính thức, trạng thái và liên kết sẽ được cập nhật tại đây.</p><div class="card-actions"><button class="btn btn-dark" type="button" disabled style="opacity:.55;cursor:not-allowed"><i class="ph ph-clock"></i> Sắp ra mắt</button><a class="btn btn-dark" href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer"><i class="ph-fill ph-discord-logo"></i> Theo dõi Discord</a></div></article>
+</section><div class="foot">KOAX SCRIPT · BY BINHSITINK</div>
+</main>
+<script>
+const statusEl=document.getElementById('copy-status');
+const scriptValue=document.getElementById('script-value');
+const scriptDescription=document.getElementById('script-description');
+const scriptNote=document.getElementById('script-note');
+let selectedScript='';
+async function copyText(text){try{await navigator.clipboard.writeText(text);statusEl.textContent='Đã sao chép script Roblox mẫu.';}catch(e){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();const ok=document.execCommand('copy');ta.remove();statusEl.textContent=ok?'Đã sao chép script Roblox mẫu.':'Không thể tự sao chép; hãy chọn và sao chép thủ công.';}}
+document.getElementById('choose-roblox').addEventListener('click',()=>{selectedScript='print("koax")';scriptValue.textContent=selectedScript;scriptDescription.textContent='Roblox · Script mẫu';scriptNote.textContent='Đây là script Luau mẫu, không phải loader hay script game có chức năng nâng cao.';statusEl.textContent='';});
+document.getElementById('copy-script').addEventListener('click',()=>{if(!selectedScript){statusEl.textContent='Hãy chọn Roblox trước khi sao chép script.';return;}copyText(selectedScript);});
+document.querySelectorAll('[data-copy]').forEach(btn=>btn.addEventListener('click',()=>copyText(btn.dataset.copy)));
+</script>
+<script src="koax-config.js"></script>
+<script>
+(async function(){
+  const params=new URLSearchParams(location.search), flow=params.get('flow');
+  const cfg=window.KOAX_CONFIG||{}, api=(cfg.API_BASE||'').replace(/\/$/,'');
+  const panel=document.getElementById('access-check'), message=document.getElementById('access-message'), spinner=document.getElementById('access-spinner');
+  const passKey='koax:pass:'+flow;
+  function deny(){location.replace('access-denied.html');}
+  function allow(){document.body.classList.remove('locked');panel.hidden=true;}
+  if(!flow||!/^[a-f0-9]{32}$/.test(flow)){deny();return;}
+  if(sessionStorage.getItem(passKey)==='1'){allow();return;}
+  const hwid=localStorage.getItem('koax-hwid');
+  if(!hwid){deny();return;}
+  try {
+    if(api){
+      const res=await fetch(api+'/validate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({flow,hwid})});
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok||!data.ok){deny();return;}
+    } else {
+      const key='koax:flow:'+flow, raw=localStorage.getItem(key);
+      if(!raw){deny();return;}
+      const grant=JSON.parse(raw);
+      if(grant.hwid!==hwid||grant.used||grant.expiresAt<Date.now()){deny();return;}
+      grant.used=true;localStorage.setItem(key,JSON.stringify(grant));
+    }
+    sessionStorage.setItem(passKey,'1');
+    allow();
+  } catch(error){
+    message.textContent='Không thể xác minh link. Đang chuyển về trang thông báo…';
+    spinner.style.display='none';
+    setTimeout(deny,500);
+  }
+})();
+</script>
+</body></html>
