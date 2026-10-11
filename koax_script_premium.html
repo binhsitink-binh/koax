@@ -186,10 +186,10 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                        <a href="https://link4m.net/kllcj" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold px-6 py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]">
+                        <button type="button" onclick="openScriptModal()" class="flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold px-6 py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]">
                             <i class="ph-fill ph-key text-xl"></i>
                             Get Script
-                        </a>
+                        </button>
                         <button onclick="openVideoModal()" class="flex items-center justify-center gap-2 bg-brand-card border border-brand-border hover:border-brand-accent text-white font-semibold px-6 py-3.5 rounded-xl transition-all">
                             <i class="ph-fill ph-play-circle text-brand-accent text-xl"></i>
                             Xem kênh YouTube
@@ -305,9 +305,9 @@
                         </div>
                         <h3 class="text-white font-extrabold text-xl mb-1">Evowars.io</h3>
                         <p class="text-brand-textMuted text-xs mb-4">Thông tin dự án và các cập nhật liên quan đến Evowars.io được đăng trong Discord Koax.</p>
-                        <a href="https://link4m.net/kllcj" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold py-2.5 rounded-xl text-sm transition-all">
+                        <button type="button" onclick="openScriptModal()" class="w-full flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold py-2.5 rounded-xl text-sm transition-all">
                             <i class="ph-fill ph-download-simple"></i> Download Script Evowars.io
-                        </a>
+                        </button>
                     </div>
                 </div>
 
@@ -416,11 +416,38 @@
             <div class="mt-8 text-center text-sm text-brand-textMuted">
                 Muốn dùng miễn phí? <a href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer" class="text-brand-greenMuted hover:text-white underline underline-offset-4">Vào Discord Koax để xem hướng dẫn Free Key</a>.
             </div>
-            <div class="mt-5 text-center text-xs text-brand-textMuted/80">
-                Đã được cấp key? <a href="key.html" class="text-brand-greenMuted hover:text-white underline underline-offset-4">Mở Key Center (giao diện mẫu)</a>.
-            </div>
         </div>
     </section>
+
+    <!-- Script Provider Modal -->
+    <div id="script-modal" role="dialog" aria-modal="true" aria-labelledby="script-modal-title" class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="w-full max-w-lg overflow-hidden rounded-2xl border border-brand-border bg-brand-card shadow-2xl">
+            <div class="flex items-center justify-between border-b border-brand-border bg-[#050e08] px-5 py-4">
+                <div>
+                    <h3 id="script-modal-title" class="font-bold text-white text-base">Get Koax Script</h3>
+                    <p class="mt-1 text-xs text-brand-textMuted">Choose a link provider</p>
+                </div>
+                <button type="button" onclick="closeScriptModal()" aria-label="Close provider selection" class="p-1 text-2xl text-brand-textMuted hover:text-white">&times;</button>
+            </div>
+            <div class="grid gap-3 p-5 sm:grid-cols-2">
+                <a href="https://link4m.net/kllcj" target="_blank" rel="noopener noreferrer" class="group flex min-h-40 flex-col items-center justify-center rounded-2xl border border-brand-accent/50 bg-brand-accent/[0.07] p-5 text-center transition hover:border-brand-accent hover:bg-brand-accent/[0.12]">
+                    <img src="link4m1.png" alt="Link4m" class="mb-3 h-14 w-14 rounded-xl object-contain" loading="lazy" onerror="this.style.display='none'">
+                    <span class="font-bold text-white">Link4m</span>
+                    <span class="mt-2 inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-300">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Hoạt động
+                    </span>
+                </a>
+                <div class="flex min-h-40 cursor-not-allowed flex-col items-center justify-center rounded-2xl border border-yellow-500/25 bg-yellow-500/[0.035] p-5 text-center opacity-80" aria-disabled="true">
+                    <img src="lootlabs2.png" alt="LootLabs" class="mb-3 h-14 w-14 rounded-xl object-contain" loading="lazy" onerror="this.style.display='none'">
+                    <span class="font-bold text-white">LootLabs</span>
+                    <span class="mt-2 inline-flex items-center gap-1.5 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-2.5 py-1 text-xs font-semibold text-yellow-300">
+                        <span class="h-1.5 w-1.5 rounded-full bg-yellow-400"></span> Đang bảo trì
+                    </span>
+                    <span class="mt-2 text-xs text-brand-textMuted">Tạm thời chưa khả dụng</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Video Modal -->
     <div id="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
@@ -480,6 +507,7 @@
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
         const videoModal = document.getElementById('video-modal');
+        const scriptModal = document.getElementById('script-modal');
         let lastFocusedElement = null;
 
         function closeMobileMenu() {
@@ -499,6 +527,22 @@
         mobileMenuBtn?.addEventListener('click', toggleMobileMenu);
         mobileMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu));
 
+        function openScriptModal() {
+            if (!scriptModal) return;
+            lastFocusedElement = document.activeElement;
+            scriptModal.classList.remove('hidden');
+            scriptModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            scriptModal.querySelector('a')?.focus();
+        }
+        function closeScriptModal() {
+            if (!scriptModal) return;
+            scriptModal.classList.add('hidden');
+            scriptModal.classList.remove('flex');
+            document.body.style.overflow = videoModal && !videoModal.classList.contains('hidden') ? 'hidden' : '';
+            lastFocusedElement?.focus?.();
+        }
+
         function openVideoModal() {
             if (!videoModal) return;
             lastFocusedElement = document.activeElement;
@@ -516,12 +560,14 @@
         }
         window.addEventListener('click', event => {
             if (event.target === videoModal) closeVideoModal();
+            if (event.target === scriptModal) closeScriptModal();
             if (mobileMenu && !mobileMenu.classList.contains('hidden') &&
                 !mobileMenu.contains(event.target) && !mobileMenuBtn?.contains(event.target)) closeMobileMenu();
         });
         document.addEventListener('keydown', event => {
             if (event.key === 'Escape') {
                 closeVideoModal();
+                closeScriptModal();
                 closeMobileMenu();
             }
         });
