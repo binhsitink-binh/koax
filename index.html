@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koax Script — by binhsitink</title>
+    <meta name="description" content="Koax Script by binhsitink — thông tin dự án, trạng thái cập nhật và kênh cộng đồng chính thức.">
+    <link rel="icon" type="image/png" href="logokoax.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#080B0A',       /* Deep dark green/black background */
+                            card: '#101512',     /* Slightly lighter card background */
+                            cardHover: '#171E19',
+                            border: '#26342B',   /* Subtle green borders */
+                            accent: '#65D99A',   /* Neon green accent */
+                            accentHover: '#4CC784',
+                            textMain: '#f8fafc',
+                            textMuted: '#A1ADA5',
+                            greenMuted: '#9BE7B7'
+                        }
+                    },
+                    backgroundImage: {
+                        'glow-radial': 'radial-gradient(circle at 50% 50%, rgba(101, 217, 154, 0.07) 0%, transparent 50%)',
+                        'glow-radial-top': 'radial-gradient(circle at 50% -20%, rgba(101, 217, 154, 0.08) 0%, transparent 50%)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root { color-scheme: dark; }
+        html { scroll-padding-top: 5.5rem; }
+        body { background-image: radial-gradient(ellipse at 50% 0%, rgba(101,217,154,.055), transparent 42%); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #080B0A; }
+        ::-webkit-scrollbar-thumb { background: #26342B; border-radius: 999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #65D99A; }
+        .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-image: linear-gradient(110deg, #fff 10%, #B8C8BE 90%); }
+        .premium-card { transition: transform .25s ease, border-color .25s ease, background-color .25s ease, box-shadow .25s ease; }
+        .premium-card:hover { transform: translateY(-4px); border-color: rgba(101,217,154,.48); box-shadow: 0 18px 50px rgba(0,0,0,.22); }
+        .reveal { opacity: 0; transform: translateY(16px); transition: opacity .65s ease, transform .65s ease; }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+        .status-dot { box-shadow: 0 0 0 4px rgba(101,217,154,.10); }
+        .koax-navbar { isolation: isolate; border-radius: 9999px; transition: border-color .25s ease, box-shadow .25s ease, background-color .25s ease; }
+        .koax-navbar:hover { border-color: rgba(101,217,154,.35); box-shadow: 0 16px 54px rgba(0,0,0,.46), 0 0 26px rgba(101,217,154,.045); }
+        .koax-nav-link { border-radius: 9999px; transition: color .2s ease, background-color .2s ease; }
+        a:focus-visible, button:focus-visible { outline: 2px solid #65D99A; outline-offset: 3px; }
+        @media (min-width: 1280px) {
+            #pricing .koax-price-card:nth-child(4) { grid-column: 2 / span 2; }
+            #pricing .koax-price-card:nth-child(5) { grid-column: 4 / span 2; }
+        }
+        .koax-price-card { box-shadow: 0 18px 44px rgba(0,0,0,.20); transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease; }
+        .koax-price-card:hover { transform: translateY(-4px); border-color: rgba(53,200,115,.58); box-shadow: 0 20px 48px rgba(0,0,0,.28), 0 0 24px rgba(53,200,115,.055); }
+        .koax-price-card-popular { box-shadow: 0 18px 46px rgba(0,0,0,.24), 0 0 30px rgba(53,200,115,.07); }
+        .koax-price-feature { display:flex; align-items:center; gap:.65rem; min-height:2.35rem; border:1px solid rgba(35,83,52,.55); background:rgba(7,20,12,.56); border-radius:.72rem; padding:.6rem .72rem; color:#A4B9AA; font-size:.78rem; line-height:1.35; }
+        .koax-price-feature i { flex-shrink:0; font-size:.95rem; }
+        .koax-price-button { display:flex; align-items:center; justify-content:center; width:100%; min-height:2.8rem; border:1px solid rgba(45,93,60,.8); border-radius:.85rem; padding:.7rem 1rem; color:#DBF4E4; font-weight:700; font-size:.85rem; text-align:center; background:rgba(11,29,17,.78); transition:background-color .2s ease, border-color .2s ease, transform .2s ease; }
+        .koax-price-button:hover { background:rgba(25,63,37,.78); border-color:rgba(53,200,115,.75); }
+        .koax-price-button-primary { background:#35C873; border-color:#35C873; color:#031109; box-shadow:0 8px 24px rgba(53,200,115,.14); }
+        .koax-price-button-primary:hover { background:#49D783; border-color:#49D783; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+            .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-brand-textMain font-sans antialiased overflow-x-hidden selection:bg-brand-accent selection:text-white">
+
+    <!-- Ambient background glows -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-brand-accent/5 blur-[120px] rounded-full"></div>
+    </div>
+
+    <nav class="koax-navbar fixed left-1/2 top-3 z-50 w-[calc(100%_-_1rem)] max-w-5xl -translate-x-1/2 rounded-full border border-brand-border/80 bg-[#080D0A]/90 backdrop-blur-2xl shadow-[0_14px_48px_rgba(0,0,0,0.42)]">
+        <div class="w-full px-3 sm:px-5 lg:px-6">
+            <div class="flex h-[62px] items-center justify-between gap-3 sm:h-[68px]">
+                <!-- Logo with K badge and by binhsitink credit -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                    <div class="w-9 h-9 shrink-0 overflow-hidden rounded-xl border border-brand-accent/40 bg-brand-accent/10 shadow-[0_0_15px_rgba(101,217,154,0.18)]">
+                        <img src="logokoax.png" alt="Koax logo" class="h-full w-full object-cover" width="36" height="36" decoding="async" onerror="this.style.display='none'">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-extrabold text-lg sm:text-xl tracking-tight text-white leading-tight">
+                            Koax <span class="text-brand-accent">Script</span>
+                        </span>
+                        <span class="text-[10px] font-semibold text-brand-greenMuted tracking-wider uppercase">by binhsitink</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation Menu -->
+                <div class="hidden lg:block">
+                    <div class="ml-0 flex items-center gap-1.5 xl:gap-2">
+                        <button onclick="openVideoModal()" class="koax-nav-link text-brand-textMuted hover:text-white hover:bg-white/[0.045] px-3 py-2 text-sm font-medium flex items-center gap-1.5 whitespace-nowrap">
+                            <i class="ph-fill ph-play-circle text-brand-accent text-lg"></i> Video Script
+                        </button>
+                        <a href="#games" class="koax-nav-link text-brand-textMuted hover:text-white hover:bg-white/[0.045] px-3 py-2 text-sm font-medium whitespace-nowrap">Trò chơi</a>
+                        <a href="#pricing" class="koax-nav-link text-brand-textMuted hover:text-white hover:bg-white/[0.045] px-3 py-2 text-sm font-medium whitespace-nowrap">Bảng giá</a>
+                        <a href="https://www.youtube.com/@binhsitinks" target="_blank" rel="noopener noreferrer" class="koax-nav-link text-red-400 hover:text-red-300 hover:bg-red-400/[0.06] px-3 py-2 text-sm font-medium flex items-center gap-1.5 whitespace-nowrap">
+                            <i class="ph-fill ph-youtube-logo text-xl"></i> Kênh YouTube
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Actions -->
+                <div class="hidden lg:flex items-center gap-3">
+                    <a href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-[#5865F2]/10 hover:bg-[#5865F2]/20 text-[#7D8BFF] border border-[#5865F2]/35 hover:border-[#7D8BFF]/65 px-4 py-2 rounded-full transition-all text-sm font-semibold whitespace-nowrap">
+                        <i class="ph-fill ph-discord-logo text-lg"></i>
+                        Discord Koax
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden flex items-center gap-2">
+                    <a href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer" aria-label="Discord Koax" class="p-2 text-[#7D8BFF] bg-[#5865F2]/10 rounded-full border border-[#5865F2]/30">
+                        <i class="ph-fill ph-discord-logo text-xl"></i>
+                    </a>
+                    <button id="mobile-menu-btn" type="button" aria-controls="mobile-menu" aria-expanded="false" class="p-2 rounded-full text-brand-textMuted hover:text-white hover:bg-brand-card focus:outline-none" aria-label="Toggle Navigation">
+                        <i id="menu-icon" class="ph-bold ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div id="mobile-menu" class="hidden lg:hidden absolute left-0 right-0 top-full mt-3 rounded-3xl border border-brand-border/80 bg-[#080D0A]/95 px-4 py-4 shadow-[0_16px_44px_rgba(0,0,0,0.48)] backdrop-blur-2xl space-y-2">
+            <button onclick="openVideoModal(); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-full text-sm font-medium text-white hover:bg-brand-card flex items-center gap-2">
+                <i class="ph-fill ph-play-circle text-brand-accent text-lg"></i> Video Script
+            </button>
+            <a href="#games" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-full text-sm font-medium text-brand-textMuted hover:text-white hover:bg-brand-card">
+                <i class="ph-fill ph-game-controller mr-2"></i> Trò chơi
+            </a>
+            <a href="#pricing" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-full text-sm font-medium text-brand-textMuted hover:text-white hover:bg-brand-card">
+                <i class="ph-fill ph-tag mr-2"></i> Bảng giá
+            </a>
+            <a href="https://www.youtube.com/@binhsitinks" target="_blank" rel="noopener noreferrer" class="block px-3 py-2.5 rounded-full text-sm font-medium text-red-400 hover:bg-red-500/10">
+                <i class="ph-fill ph-youtube-logo mr-2 text-lg"></i> Kênh YouTube (binhsitinks)
+            </a>
+            <a href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer" class="w-full mt-2 flex items-center justify-center gap-2 bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold px-4 py-2.5 rounded-full transition-all text-sm">
+                <i class="ph-fill ph-discord-logo text-xl"></i> Tham gia Discord
+            </a>
+        </div>
+    </nav>
+
+    <main class="relative z-10 pt-24 pb-16 sm:pt-36 sm:pb-24 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8 items-center">
+                
+                <!-- Hero Text -->
+                <div class="text-center lg:text-left lg:col-span-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-brand-accent/40 bg-brand-accent/10 text-brand-accent text-xs font-semibold mb-6">
+                        <span class="w-2 h-2 rounded-full bg-brand-accent animate-ping"></span>
+                        KOAX SCRIPT · BY BINHSITINK
+                    </div>
+                    
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl tracking-tight font-extrabold mb-4 sm:mb-6 leading-tight">
+                        <span class="block text-gradient">Tối ưu trải nghiệm chơi game</span>
+                        <span class="block text-brand-accent mt-1">& Roblox Script</span>
+                    </h1>
+                    
+                    <p class="text-sm sm:text-base md:text-lg text-brand-textMuted max-w-xl mx-auto lg:mx-0 mb-5 leading-relaxed">
+                        Koax Script được phát triển bởi <strong class="text-white">binhsitink</strong>, tập trung vào trải nghiệm gọn gàng, dễ sử dụng và thông tin cập nhật rõ ràng cho cộng đồng.
+                    </p>
+                    <!-- Random Koax tips -->
+                    <div class="koax-tip-panel max-w-xl mx-auto lg:mx-0 mb-7 rounded-2xl border border-brand-border/80 bg-white/[0.025] px-4 py-3.5 text-left" role="status" aria-live="polite" aria-atomic="true">
+                        <div class="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-greenMuted">
+                            <i class="ph ph-lightbulb text-base text-brand-accent" aria-hidden="true"></i>
+                            Koax Tips <span class="text-brand-textMuted/70 font-medium tracking-[0.12em]">· NGẪU NHIÊN</span>
+                        </div>
+                        <p id="koax-tip-text" class="min-h-[2.5rem] text-xs sm:text-sm leading-relaxed text-brand-textMuted transition-all duration-300 ease-out">
+                            Đang chọn một tip ngẫu nhiên của Koax...
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                        <a href="script.html" class="flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold px-6 py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]">
+                            <i class="ph-fill ph-key text-xl"></i>
+                            Get Script
+                        </a>
+                        <button onclick="openVideoModal()" class="flex items-center justify-center gap-2 bg-brand-card border border-brand-border hover:border-brand-accent text-white font-semibold px-6 py-3.5 rounded-xl transition-all">
+                            <i class="ph-fill ph-play-circle text-brand-accent text-xl"></i>
+                            Xem kênh YouTube
+                        </button>
+                    </div>
+
+                    <div class="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs sm:text-sm text-brand-textMuted font-medium">
+                        <div class="flex items-center gap-1.5"><i class="ph-fill ph-check-circle text-brand-accent"></i> Evowars.io · thông tin trạng thái bên dưới</div>
+                        <div class="flex items-center gap-1.5"><i class="ph-fill ph-clock text-yellow-400"></i> Roblox · Sắp ra mắt</div>
+                        <div class="flex items-center gap-1.5"><i class="ph-fill ph-shield-check text-brand-accent"></i> By binhsitink</div>
+                    </div>
+                </div>
+
+                <!-- Koax Feature Showcase -->
+                <div class="mt-12 lg:mt-0 lg:col-span-6 relative reveal">
+                    <div class="absolute -inset-5 rounded-[2rem] bg-brand-accent/[0.06] blur-3xl -z-10"></div>
+                    <div class="relative overflow-hidden rounded-3xl border border-brand-border bg-gradient-to-br from-[#121A15] via-[#0D120F] to-[#0A0E0B] p-5 sm:p-7 shadow-2xl">
+                        <div class="absolute -right-12 -top-12 h-40 w-40 rounded-full border border-brand-accent/10"></div>
+                        <div class="absolute -right-5 -top-5 h-28 w-28 rounded-full border border-brand-accent/10"></div>
+
+                        <div class="relative flex items-start justify-between gap-4 mb-7">
+                            <div>
+                                <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.24em] text-brand-accent mb-3">
+                                    <span class="h-px w-5 bg-brand-accent"></span> Koax Feature Showcase
+                                </div>
+                                <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Simple. Refined.<br><span class="text-brand-greenMuted">Functional.</span></h2>
+                                <p class="mt-3 max-w-md text-sm leading-relaxed text-brand-textMuted">Một không gian gọn gàng để theo dõi dự án, trạng thái và thông báo từ Koax.</p>
+                            </div>
+                            <div class="hidden sm:flex h-12 w-12 shrink-0 overflow-hidden rounded-2xl border border-brand-accent/25 bg-brand-accent/[0.07]">
+                                <img src="logokoax.png" alt="Koax logo" class="h-full w-full object-cover" width="48" height="48" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                            </div>
+                        </div>
+
+                        <div class="relative space-y-3">
+                            <article class="premium-card flex items-start gap-4 rounded-2xl border border-brand-border/80 bg-black/20 p-4 sm:p-5">
+                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-brand-accent/20 bg-brand-accent/[0.07] text-brand-accent">
+                                    <i class="ph ph-squares-four text-xl"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                        <h3 class="text-sm font-semibold text-white">Minimal Experience</h3>
+                                        <span class="rounded-full border border-brand-border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-brand-textMuted">Design</span>
+                                    </div>
+                                    <p class="text-xs sm:text-sm leading-relaxed text-brand-textMuted">Thiết kế tinh gọn, tập trung vào thông tin quan trọng và thao tác chính.</p>
+                                </div>
+                            </article>
+
+                            <article class="premium-card flex items-start gap-4 rounded-2xl border border-brand-border/80 bg-black/20 p-4 sm:p-5">
+                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-brand-accent/20 bg-brand-accent/[0.07] text-brand-accent">
+                                    <i class="ph ph-activity text-xl"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                        <h3 class="text-sm font-semibold text-white">Clear Project Status</h3>
+                                        <span class="rounded-full border border-brand-border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-brand-textMuted">Status</span>
+                                    </div>
+                                    <p class="text-xs sm:text-sm leading-relaxed text-brand-textMuted">Theo dõi trạng thái Evowars.io và Roblox theo thông tin được công bố trên trang.</p>
+                                </div>
+                            </article>
+
+                            <article class="premium-card flex items-start gap-4 rounded-2xl border border-brand-border/80 bg-black/20 p-4 sm:p-5">
+                                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-brand-accent/20 bg-brand-accent/[0.07] text-brand-accent">
+                                    <i class="ph ph-users-three text-xl"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                        <h3 class="text-sm font-semibold text-white">Community Updates</h3>
+                                        <span class="rounded-full border border-brand-border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-brand-textMuted">Community</span>
+                                    </div>
+                                    <p class="text-xs sm:text-sm leading-relaxed text-brand-textMuted">Xem thông báo, hướng dẫn và liên hệ với cộng đồng qua Discord Koax.</p>
+                                </div>
+                            </article>
+                        </div>
+
+                        <div class="relative mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-brand-border/70 pt-5">
+                            <div class="flex items-center gap-2 text-xs text-brand-textMuted">
+                                <span class="h-1.5 w-1.5 rounded-full bg-brand-accent"></span>
+                                Koax Script <span class="text-brand-border">/</span> by binhsitink
+                            </div>
+                            <a href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl border border-brand-accent/30 bg-brand-accent/[0.07] px-4 py-2.5 text-xs font-semibold text-brand-greenMuted transition-colors hover:border-brand-accent/60 hover:bg-brand-accent/[0.12]">
+                                <i class="ph-fill ph-discord-logo text-base"></i> Kết nối cộng đồng <i class="ph ph-arrow-up-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section id="games" class="py-20 border-t border-brand-border/30 reveal">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-3">
+                    <div class="w-8 h-[2px] bg-brand-accent"></div>
+                    <span class="text-xs font-bold tracking-widest text-brand-accent uppercase">Danh sách trò chơi</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-3 tracking-tight">Game được hỗ trợ bởi Koax</h2>
+                <p class="text-brand-textMuted max-w-2xl text-base">Danh sách dự án của Koax. Trạng thái trên trang là thông tin do quản trị viên cập nhật, không phải kiểm tra trực tiếp từ máy chủ.</p>
+            </div>
+
+            <!-- Game Cards Grid - ONLY 2 GAMES -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                
+                <!-- Game 1: Evowars.io -->
+                <div class="premium-card relative rounded-2xl overflow-hidden group border border-brand-accent/50 bg-brand-card hover:border-brand-accent transition-all shadow-lg hover:shadow-[0_0_25px_rgba(34,197,94,0.25)]">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="evowars.png" alt="Evowars.io Koax Script" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.style.display='none'" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                    </div>
+                    <div class="p-5 relative">
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-brand-accent bg-brand-accent/20 text-xs text-brand-accent font-semibold mb-2">
+                            <i class="ph-fill ph-check-circle"></i> Được liệt kê · Evowars.io
+                        </div>
+                        <h3 class="text-white font-extrabold text-xl mb-1">Evowars.io</h3>
+                        <p class="text-brand-textMuted text-xs mb-4">Thông tin dự án và các cập nhật liên quan đến Evowars.io được đăng trong Discord Koax.</p>
+                        <a href="script.html#evowars" class="w-full flex items-center justify-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-black font-bold py-2.5 rounded-xl text-sm transition-all">
+                            <i class="ph-fill ph-download-simple"></i> Download Script Evowars.io
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Game 2: Roblox (Coming Soon) -->
+                <div class="premium-card relative rounded-2xl overflow-hidden group border border-yellow-500/40 bg-brand-card hover:border-yellow-500 transition-all shadow-lg">
+                    <div class="h-48 overflow-hidden relative bg-black/60 flex items-center justify-center">
+                        <img src="roblox.png" alt="Roblox Koax Script" class="w-28 h-28 object-contain group-hover:scale-110 transition-transform duration-300" onerror="this.style.display='none'" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                    </div>
+                    <div class="p-5 relative">
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-yellow-500/50 bg-yellow-500/20 text-xs text-yellow-400 font-semibold mb-2 animate-pulse">
+                            <i class="ph-fill ph-gear text-yellow-400"></i> Sắp ra mắt · Roblox
+                        </div>
+                        <h3 class="text-white font-extrabold text-xl mb-1">Roblox Universal</h3>
+                        <p class="text-brand-textMuted text-xs mb-4">Roblox script hiện được ghi nhận là sắp ra mắt. Theo dõi Discord Koax để xem thông báo mới nhất.</p>
+                        <button disabled class="w-full flex items-center justify-center gap-2 bg-brand-border/60 text-brand-textMuted font-semibold py-2.5 rounded-xl text-sm cursor-not-allowed">
+                            <i class="ph-fill ph-lock-key"></i> Sắp Ra Mắt
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="py-20 sm:py-24 border-t border-brand-border/30 relative overflow-hidden reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12 sm:mb-14">
+                <div class="flex items-center justify-center gap-4 mb-3">
+                    <div class="w-8 h-px bg-brand-border"></div>
+                    <span class="text-xs font-bold tracking-widest text-brand-accent uppercase">Bảng giá Key</span>
+                    <div class="w-8 h-px bg-brand-border"></div>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">Chọn gói Koax phù hợp</h2>
+                <p class="text-brand-textMuted max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">Chọn thời hạn phù hợp và liên hệ Admin Koax để xác nhận tình trạng key, quyền lợi và phương thức thanh toán.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-5 lg:gap-6 items-stretch max-w-6xl mx-auto">
+                <!-- 1 Day Plan -->
+                <article class="koax-price-card xl:col-span-2 relative flex min-w-0 flex-col rounded-[1.6rem] border border-[#19432B] bg-gradient-to-b from-[#0B1710] to-[#07100B] p-6 sm:p-7">
+                    <div class="mb-5 flex items-center gap-2 text-sm font-bold text-[#DDF7E6]"><i class="ph-fill ph-gift text-[#35C873] text-lg"></i> Premium — 1 Ngày</div>
+                    <div class="mb-1 flex items-baseline gap-2"><span class="text-4xl font-extrabold tracking-tight text-white">2.5K</span><span class="text-sm font-medium text-[#7E9C89]">/ 1 ngày</span></div>
+                    <p class="mb-5 min-h-[2.75rem] text-sm leading-relaxed text-[#95AA9D]">Gói ngắn hạn để bắt đầu trải nghiệm Koax.</p>
+                    <ul class="mb-7 flex-1 space-y-2">
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Thời hạn 1 ngày</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Hỗ trợ qua Discord</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Xác nhận trạng thái trước khi mua</span></li>
+                    </ul>
+                    <a href="https://discord.com/users/1463776147014942944" target="_blank" rel="noopener noreferrer" class="koax-price-button">Liên hệ Admin</a>
+                </article>
+
+                <!-- 7 Day Plan -->
+                <article class="koax-price-card xl:col-span-2 relative flex min-w-0 flex-col rounded-[1.6rem] border border-[#19432B] bg-gradient-to-b from-[#0B1710] to-[#07100B] p-6 sm:p-7">
+                    <div class="mb-5 flex items-center gap-2 text-sm font-bold text-[#DDF7E6]"><i class="ph-fill ph-calendar-check text-[#35C873] text-lg"></i> Premium — 7 Ngày</div>
+                    <div class="mb-1 flex items-baseline gap-2"><span class="text-4xl font-extrabold tracking-tight text-white">12K</span><span class="text-sm font-medium text-[#7E9C89]">/ 7 ngày</span></div>
+                    <p class="mb-5 min-h-[2.75rem] text-sm leading-relaxed text-[#95AA9D]">Thời hạn một tuần, phù hợp để sử dụng trong thời gian ngắn.</p>
+                    <ul class="mb-7 flex-1 space-y-2">
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Thời hạn 7 ngày</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Hỗ trợ qua Discord</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Xác nhận trạng thái trước khi mua</span></li>
+                    </ul>
+                    <a href="https://discord.com/users/1463776147014942944" target="_blank" rel="noopener noreferrer" class="koax-price-button">Liên hệ Admin</a>
+                </article>
+
+                <!-- 30 Day Popular Plan -->
+                <article class="koax-price-card koax-price-card-popular xl:col-span-2 relative flex min-w-0 flex-col rounded-[1.6rem] border border-[#277A48] bg-gradient-to-b from-[#10251A] to-[#07110B] p-6 sm:p-7">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#35C873] px-4 py-1 text-[10px] font-extrabold uppercase tracking-wide text-[#031109] shadow-[0_0_22px_rgba(53,200,115,.22)]">⭐ Phổ biến</div>
+                    <div class="mb-5 mt-2 flex items-center gap-2 text-sm font-bold text-[#E3FFEB]"><i class="ph-fill ph-crown text-[#35C873] text-lg"></i> Premium — 30 Ngày</div>
+                    <div class="mb-1 flex items-baseline gap-2"><span class="text-4xl font-extrabold tracking-tight text-white">50K</span><span class="text-sm font-medium text-[#86AA94]">/ 30 ngày</span></div>
+                    <p class="mb-5 min-h-[2.75rem] text-sm leading-relaxed text-[#A0B8A8]">Lựa chọn cân bằng cho thời gian sử dụng dài hơn.</p>
+                    <ul class="mb-7 flex-1 space-y-2">
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Thời hạn 30 ngày</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Hỗ trợ qua Discord</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Ưu tiên thông báo cập nhật</span></li>
+                    </ul>
+                    <a href="https://discord.com/users/1463776147014942944" target="_blank" rel="noopener noreferrer" class="koax-price-button koax-price-button-primary">Mua gói 30 Ngày</a>
+                </article>
+
+                <!-- 1 Year Plan -->
+                <article class="koax-price-card xl:col-span-2 relative flex min-w-0 flex-col rounded-[1.6rem] border border-[#19432B] bg-gradient-to-b from-[#0B1710] to-[#07100B] p-6 sm:p-7">
+                    <div class="mb-5 flex items-center gap-2 text-sm font-bold text-[#DDF7E6]"><i class="ph-fill ph-star text-[#35C873] text-lg"></i> Premium — 1 Năm</div>
+                    <div class="mb-1 flex items-baseline gap-2"><span class="text-4xl font-extrabold tracking-tight text-white">100K</span><span class="text-sm font-medium text-[#7E9C89]">/ 1 năm</span></div>
+                    <p class="mb-5 min-h-[2.75rem] text-sm leading-relaxed text-[#95AA9D]">Dành cho người muốn sử dụng trong thời gian dài.</p>
+                    <ul class="mb-7 flex-1 space-y-2">
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Thời hạn 1 năm</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Hỗ trợ qua Discord</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Xác nhận quyền lợi trước khi mua</span></li>
+                    </ul>
+                    <a href="https://discord.com/users/1463776147014942944" target="_blank" rel="noopener noreferrer" class="koax-price-button">Liên hệ Admin</a>
+                </article>
+
+                <!-- Lifetime Plan -->
+                <article class="koax-price-card xl:col-span-2 relative flex min-w-0 flex-col rounded-[1.6rem] border border-[#19432B] bg-gradient-to-b from-[#0B1710] to-[#07100B] p-6 sm:p-7">
+                    <div class="mb-5 flex items-center gap-2 text-sm font-bold text-[#DDF7E6]"><i class="ph-fill ph-infinity text-[#35C873] text-lg"></i> Premium — Vĩnh Viễn</div>
+                    <div class="mb-1 flex items-baseline gap-2"><span class="text-4xl font-extrabold tracking-tight text-white">150K</span><span class="text-sm font-medium text-[#7E9C89]">/ vĩnh viễn</span></div>
+                    <p class="mb-5 min-h-[2.75rem] text-sm leading-relaxed text-[#95AA9D]">Gói vĩnh viễn theo điều kiện sử dụng được Admin xác nhận.</p>
+                    <ul class="mb-7 flex-1 space-y-2">
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Thời hạn vĩnh viễn</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Hỗ trợ qua Discord</span></li>
+                        <li class="koax-price-feature"><i class="ph-fill ph-check-square text-[#35C873]"></i><span>Xác nhận điều kiện trước khi mua</span></li>
+                    </ul>
+                    <a href="https://discord.com/users/1463776147014942944" target="_blank" rel="noopener noreferrer" class="koax-price-button">Liên hệ Admin</a>
+                </article>
+            </div>
+
+            <div class="mt-8 text-center text-sm text-brand-textMuted">
+                Muốn dùng miễn phí? <a href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer" class="text-brand-greenMuted hover:text-white underline underline-offset-4">Vào Discord Koax để xem hướng dẫn Free Key</a>.
+            </div>
+            <div class="mt-5 text-center text-xs text-brand-textMuted/80">
+                Đã được cấp key? <a href="key.html" class="text-brand-greenMuted hover:text-white underline underline-offset-4">Mở Key Center (giao diện mẫu)</a>.
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div id="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-3xl overflow-hidden relative shadow-2xl">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-brand-border bg-[#050e08]">
+                <div class="flex items-center gap-2">
+                    <i class="ph-fill ph-youtube-logo text-red-500 text-2xl"></i>
+                    <h3 id="video-modal-title" class="font-bold text-white text-base">Koax Script · YouTube</h3>
+                </div>
+                <button onclick="closeVideoModal()" class="text-brand-textMuted hover:text-white text-2xl p-1 focus:outline-none">&times;</button>
+            </div>
+            <div class="p-4 sm:p-6 text-center">
+                <div class="aspect-video w-full bg-black rounded-xl overflow-hidden border border-brand-border/50 flex flex-col items-center justify-center relative group">
+                    <i class="ph-fill ph-youtube-logo text-6xl text-red-600 mb-4 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-white font-bold text-lg mb-1">Mở kênh YouTube của Koax</p>
+                    <p class="text-brand-textMuted text-xs mb-5">Nút bên dưới sẽ mở kênh YouTube hiện có. Video cụ thể chưa được nhúng vì chưa có đường dẫn video riêng.</p>
+                    <a href="https://www.youtube.com/@binhsitinks" target="_blank" rel="noopener noreferrer" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm inline-flex items-center gap-2 transition-all shadow-lg">
+                        <i class="ph-fill ph-play-circle text-xl"></i> Mở Kênh YouTube binhsitinks
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-brand-bg py-8 border-t border-brand-border/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-7 h-7 shrink-0 overflow-hidden rounded border border-brand-accent/40 bg-brand-accent/20">
+                    <img src="logokoax.png" alt="Koax logo" class="h-full w-full object-cover" width="28" height="28" loading="lazy" decoding="async" onerror="this.style.display='none'">
+                </div>
+                <div class="text-white font-bold text-sm">
+                    Koax Script <span class="text-brand-greenMuted text-xs font-normal">by binhsitink</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4 text-xs">
+                <a href="https://discord.gg/9vcmBX8zhA" target="_blank" rel="noopener noreferrer" class="text-brand-textMuted hover:text-[#5865F2] transition-colors flex items-center gap-1">
+                    <i class="ph-fill ph-discord-logo text-base"></i> Discord Koax
+                </a>
+                <a href="https://www.youtube.com/@binhsitinks" target="_blank" rel="noopener noreferrer" class="text-brand-textMuted hover:text-red-400 transition-colors flex items-center gap-1">
+                    <i class="ph-fill ph-youtube-logo text-base"></i> YouTube
+                </a>
+                <a href="https://discord.com/users/1463776147014942944" target="_blank" rel="noopener noreferrer" class="text-brand-textMuted hover:text-white transition-colors flex items-center gap-1">
+                    <i class="ph-fill ph-user-circle text-base"></i> Admin
+                </a>
+            </div>
+
+            <div class="text-brand-textMuted text-xs">
+                &copy; 2026 Koax Script by binhsitink.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts for navigation, modal and subtle reveal animations -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const videoModal = document.getElementById('video-modal');
+        let lastFocusedElement = null;
+
+        function closeMobileMenu() {
+            if (!mobileMenu || !menuIcon) return;
+            mobileMenu.classList.add('hidden');
+            menuIcon.className = 'ph-bold ph-list text-2xl';
+            mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+        }
+        function toggleMobileMenu() {
+            if (!mobileMenu || !menuIcon) return;
+            const isOpening = mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.className = isOpening ? 'ph-bold ph-x text-2xl' : 'ph-bold ph-list text-2xl';
+            mobileMenuBtn?.setAttribute('aria-expanded', String(isOpening));
+        }
+        mobileMenuBtn?.setAttribute('aria-expanded', 'false');
+        mobileMenuBtn?.addEventListener('click', toggleMobileMenu);
+        mobileMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu));
+
+        function openVideoModal() {
+            if (!videoModal) return;
+            lastFocusedElement = document.activeElement;
+            videoModal.classList.remove('hidden');
+            videoModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            videoModal.querySelector('button')?.focus();
+        }
+        function closeVideoModal() {
+            if (!videoModal) return;
+            videoModal.classList.add('hidden');
+            videoModal.classList.remove('flex');
+            document.body.style.overflow = '';
+            lastFocusedElement?.focus?.();
+        }
+        window.addEventListener('click', event => {
+            if (event.target === videoModal) closeVideoModal();
+            if (mobileMenu && !mobileMenu.classList.contains('hidden') &&
+                !mobileMenu.contains(event.target) && !mobileMenuBtn?.contains(event.target)) closeMobileMenu();
+        });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                closeVideoModal();
+                closeMobileMenu();
+            }
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', event => {
+                const selector = anchor.getAttribute('href');
+                const target = selector && document.querySelector(selector);
+                if (!target) return;
+                event.preventDefault();
+                target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+            });
+        });
+        // Pick a random Koax tip, keep it visible for 10–15 seconds, then fade to another.
+        const koaxTipText = document.getElementById('koax-tip-text');
+        const koaxTips = [
+            'Gợi ý vui: Nếu admin binhsitink đang vui, thử hỏi trên Discord xem có ưu đãi không nhé. Mức giảm và điều kiện phải được admin xác nhận trước khi mua.',
+            'Ngày lễ đôi khi có chương trình khuyến mãi. Theo dõi Discord Koax để biết ưu đãi nào đang thật sự áp dụng nha.',
+            'Trước khi lấy key, nhớ kiểm tra nền tảng và trạng thái hỗ trợ mới nhất trên website nhé.',
+            'Nghe nói có ưu đãi? Hỏi admin trên Discord để xác nhận giá, thời hạn và điều kiện trước khi thanh toán.',
+            'Discord Koax là nơi nên ghé để xem thông báo, hướng dẫn và cập nhật mới.',
+            'Roblox hiện đang được ghi nhận là sắp ra mắt. Theo dõi Discord Koax để xem thông báo mới nhất nhé.',
+
+            'Nếu script biết nói, câu đầu tiên chắc là: “Bạn đã đọc hướng dẫn chưa vậy?” =))',
+            'Hỏi vui: Script chạy bằng gì? Bằng code… và đôi khi bằng niềm tin vào dấu ngoặc =))',
+            'Tip lập trình: thiếu một dấu ngoặc thôi cũng đủ biến buổi tối chill thành buổi tối debug.',
+            'Nếu script chạy ngon ngay lần đầu, hãy chụp ảnh lại. Khoảnh khắc huyền thoại đó hiếm lắm =))',
+            'Câu hỏi ngu hôm nay: Nếu t tắt máy thì Auto Farm có nhớ t không?',
+            'Một dòng code sai có thể tạo ra 100 dòng câu hỏi “tại sao nó không chạy?”.',
+            'Trước khi báo lỗi, thử đọc lại thông báo lỗi. Đôi khi câu trả lời đang hét vào mặt mình.',
+            'Nếu thấy chữ “nil”, đừng hoảng. Nó chỉ đang báo rằng thứ m tìm hiện chưa có thôi.',
+            'Debugging là trò chơi tìm đồ vật bị giấu, ngoại trừ đồ vật chính là lỗi do mình viết.',
+            'Câu hỏi vui: Nếu đặt tên biến là “money”, nó có tự sinh tiền không? Tiếc là không =))',
+            'Nếu code chạy được nhưng m không hiểu tại sao, xin chúc mừng: m vừa mở khóa nhiệm vụ mới — tìm hiểu code.',
+            'Nhớ lưu bản dự phòng trước khi sửa. Nút Ctrl + Z không phải lúc nào cũng cứu được cả thế giới.',
+            'Tip nhỏ: Đặt tên biến dễ hiểu giúp m đỡ phải giải câu đố do chính mình tạo ra tuần trước.',
+            'Câu hỏi: Vì sao bug xuất hiện lúc đang quay video? Vì nó cũng muốn nổi tiếng chăng? =))',
+            'Nếu gặp lỗi, thử tái hiện lỗi bằng các bước cụ thể. “Nó tự hỏng” chưa phải báo cáo bug hoàn chỉnh đâu nha.',
+            'Một thông báo lỗi có ích hơn 10 lần bấm chạy lại mà không biết chuyện gì đang xảy ra.',
+            'Đừng gọi mọi thứ là “script final final mới nhất”. Rồi sẽ có “final_final_v7_thật_sự”.',
+            'Nếu script cần key, hãy lấy từ nguồn chính thức và đừng chia sẻ key riêng tư lung tung.',
+            'Không có bản cập nhật nào đáng tin chỉ vì tiêu đề ghi “100% working forever”. Kiểm tra nguồn trước nha.',
+            'Mẹo dùng Koax: đọc trạng thái hỗ trợ trước khi thử, tiết kiệm thời gian cho cả m và admin.',
+            'Nếu website nói “đang cập nhật”, đó không phải thử thách để spam nút mỗi 0,2 giây đâu =))',
+            'Câu hỏi ngu: Nhấn nút nhanh hơn thì server có cập nhật nhanh hơn không? Không đâu m ơi =))',
+            'Script và người chơi có điểm chung: cả hai đều cần nghỉ khi mọi thứ bắt đầu quá nóng.',
+            'Đừng tải file lạ chỉ vì ai đó nói “tin t đi bro”. Kiểm tra nguồn và quyền truy cập trước nhé.',
+            'Một script gọn gàng thường dễ bảo trì hơn một script dài ngoằng mà không có ghi chú.',
+            'Comment trong code giống lời nhắn cho bản thân tương lai. Hãy tử tế với bản thân tương lai nha.',
+            'Nếu cần hỗ trợ, gửi tên nền tảng, phiên bản và các bước gây lỗi. Admin không có siêu năng lực đọc suy nghĩ =))',
+            'Câu hỏi vui: Bug có ngủ không? Không biết, nhưng nó hay xuất hiện đúng lúc mình định đi ngủ.',
+            'Cập nhật game có thể làm script cũ không còn tương thích. Kiểm tra thông báo trước khi kết luận script “toang”.',
+            'Đừng tin ảnh chụp màn hình là bằng chứng duy nhất. Hãy tìm thông tin và hướng dẫn từ nguồn đáng tin.',
+            'Nếu một tính năng chưa được công bố, đừng xem lời đồn là cam kết chính thức nha.',
+            'Mẹo nhỏ: mô tả lỗi càng rõ thì càng ít phải chơi trò đoán chữ với người hỗ trợ.',
+            'Muốn hỏi “sao không chạy?” thì thêm một dòng về lỗi đang hiện trên màn hình nhé =))',
+            'Câu hỏi ngớ ngẩn: Nếu đổi tên file thành “super_fast.lua”, nó có chạy nhanh hơn không? Chỉ nhanh hơn ở trí tưởng tượng thôi.',
+            'Đừng dùng cùng một key trên những nơi không rõ nguồn gốc. An toàn tài khoản vẫn quan trọng hơn vài cú click.',
+            'Khi thử tính năng mới, thay đổi từng thứ một để biết điều gì thật sự tạo ra khác biệt.',
+            'Nếu script hoạt động khác dự kiến, ghi lại điều kiện xảy ra lỗi. “Lúc được lúc không” là manh mối, chưa phải kết luận.',
+            'Một bản cập nhật tốt nên có ghi chú thay đổi. “Sửa vài thứ” nghe bí ẩn quá rồi đó =))',
+            'Không phải máy nào cũng có hiệu năng giống nhau. Hãy kiểm tra cấu hình và các ứng dụng đang chạy nền.',
+            'Câu hỏi vui: Tắt hết cửa sổ có làm bug biến mất không? Có khi chỉ làm m không nhìn thấy nó thôi =))',
+            'Đừng tắt phần mềm bảo vệ chỉ để chạy một file không rõ nguồn. Nếu đáng tin, hãy xác minh nguồn trước.',
+            'Nếu gặp người giả danh admin Koax, hãy kiểm tra danh tính qua kênh Discord chính thức.',
+            'Không chắc giá key? Hỏi trước khi trả tiền. Đừng để ví tiền tham gia chế độ Hardcore ngoài ý muốn.',
+            'Khuyến mãi có thể thay đổi theo thời điểm. Chỉ tin mức giảm được thông báo hoặc xác nhận chính thức.',
+            'Script không phải phép thuật: máy, mạng, phiên bản game và code đều có thể ảnh hưởng kết quả.',
+            'Câu hỏi ngu: Máy tính có buồn khi mình đóng VS Code không? Có thể quạt máy sẽ trả lời thay nó =))',
+            'Nếu định chỉnh sửa code, hãy giữ một bản gốc sạch. Bản backup là chiếc phao của dân dev.',
+            'Đọc điều khoản và quy định của nền tảng trước khi dùng công cụ bên thứ ba. Tránh rước rắc rối vào người.',
+            'Nếu thấy một tính năng ghi “Coming soon”, hiểu đơn giản là chưa sẵn sàng — đừng coi nó như tính năng đã có.',
+            'Chúc mừng, m đã đọc tới tip này. Phần thưởng là… một tip khác ngẫu nhiên trong vài giây nữa =))'
+        ];
+
+        let previousKoaxTipIndex = -1;
+        function getRandomKoaxTipIndex() {
+            let nextIndex = Math.floor(Math.random() * koaxTips.length);
+            if (koaxTips.length > 1) {
+                while (nextIndex === previousKoaxTipIndex) {
+                    nextIndex = Math.floor(Math.random() * koaxTips.length);
+                }
+            }
+            previousKoaxTipIndex = nextIndex;
+            return nextIndex;
+        }
+
+        function showRandomKoaxTip(isInitial = false) {
+            if (!koaxTipText || koaxTips.length === 0) return;
+            const nextTip = koaxTips[getRandomKoaxTipIndex()];
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const updateTip = () => {
+                koaxTipText.textContent = nextTip;
+                koaxTipText.classList.remove('opacity-0', 'translate-y-1');
+                // Each tip stays visible for a random 10–15 seconds.
+                const visibleDuration = 10000 + Math.floor(Math.random() * 5001);
+                window.setTimeout(() => showRandomKoaxTip(false), visibleDuration);
+            };
+
+            if (isInitial || reduceMotion) {
+                updateTip();
+            } else {
+                koaxTipText.classList.add('opacity-0', 'translate-y-1');
+                window.setTimeout(updateTip, 350);
+            }
+        }
+
+        if (koaxTipText && koaxTips.length > 1) {
+            // Show a random tip immediately; no counter and no fixed sequence.
+            showRandomKoaxTip(true);
+        }
+
+        const revealItems = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const revealObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            revealItems.forEach(item => revealObserver.observe(item));
+        } else {
+            revealItems.forEach(item => item.classList.add('is-visible'));
+        }
+    </script>
+</body>
+</html>
