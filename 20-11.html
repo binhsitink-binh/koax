@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Một Chút Dịu Dàng - Quà Tặng 20/10</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #1a0b18;
+      --rose-primary: #ff75a0;
+      --rose-light: #ffb3c6;
+      --rose-glow: rgba(255, 117, 160, 0.4);
+      --purple-accent: #8a4baf;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 200, 220, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(138, 75, 175, 0.25) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(255, 117, 160, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(35, 12, 37, 1) 0%, #0f050e 100%);
+      color: #f7e8f0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Canvas for Particle Systems */
+    #fxCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Glass Card Container */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 117, 160, 0.1);
+      border-radius: 28px;
+    }
+
+    /* Keyframe Animations */
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 15px var(--rose-glow), 0 0 30px rgba(255, 117, 160, 0.2);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 28px var(--rose-glow), 0 0 50px rgba(255, 117, 160, 0.4);
+        transform: scale(1.02);
+      }
+    }
+
+    @keyframes textShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes panicShake {
+      0% { transform: scale(1) rotate(0deg); }
+      15% { transform: scale(1.25) rotate(-18deg); }
+      30% { transform: scale(0.85) rotate(18deg); }
+      45% { transform: scale(1.2) rotate(-12deg); }
+      60% { transform: scale(0.9) rotate(12deg); }
+      75% { transform: scale(1.1) rotate(-6deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes orbitRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(2deg); }
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.2); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.15); }
+      70% { transform: scale(1); }
+    }
+
+    .shimmer-text {
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(90deg, #ffb3c6, #ffffff, #ff75a0, #ffd0e1, #ffffff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textShimmer 5s infinite linear;
+    }
+
+    .handwriting {
+      font-family: 'Caveat', cursive;
+    }
+
+    /* Interactive Buttons */
+    .btn-pink {
+      background: linear-gradient(135deg, #ff75a0 0%, #e63975 100%);
+      color: #ffffff;
+      font-weight: 700;
+      animation: pulseGlow 3s infinite ease-in-out;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-pink:hover {
+      transform: translateY(-3px) scale(1.04);
+      background: linear-gradient(135deg, #ff85ab 0%, #f74582 100%);
+    }
+
+    /* The Runaway "Có 😈" Button - FIXED Dynamic Positioning */
+    #noBtn {
+      position: fixed;
+      z-index: 9999;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      will-change: left, top, transform;
+      transition: left 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                  top 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  transform 0.15s ease-out,
+                  background-color 0.2s,
+                  border-color 0.2s;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+    }
+
+    #noBtn.scared {
+      animation: panicShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      background-color: rgba(239, 68, 68, 0.25) !important;
+      border-color: #ef4444 !important;
+      color: #fca5a5 !important;
+    }
+
+    /* CSS Bouquet Graphic - layered rose, leaves and soft motion */
+    .flower-wrap {
+      animation: floatSoft 6s ease-in-out infinite;
+      isolation: isolate;
+      filter: drop-shadow(0 12px 22px rgba(255, 70, 135, 0.12));
+    }
+    .flower-art {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .flower-main {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: flowerBloom 4.8s ease-in-out infinite;
+    }
+    .flower-side {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: flowerBloom 5.5s ease-in-out infinite reverse;
+    }
+    .flower-sparkle {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: sparkle 2.6s ease-in-out infinite;
+    }
+    @keyframes flowerBloom {
+      0%, 100% { scale: 1; }
+      50% { scale: 1.045; }
+    }
+    @keyframes sparkle {
+      0%, 100% { opacity: .42; scale: .86; }
+      50% { opacity: 1; scale: 1.12; }
+    }
+    .orbit-ring {
+      border: 1px dashed rgba(255, 179, 198, 0.25);
+      animation: orbitRotate 30s linear infinite;
+    }
+    .orbit-ring-reverse {
+      border: 1px dotted rgba(255, 117, 160, 0.2);
+      animation: orbitRotate 22s linear infinite reverse;
+    }
+
+    /* Reserve a tidy second row for the runaway button on phones. */
+    @media (max-width: 639px) {
+      #btnContainer {
+        min-height: 112px;
+        align-items: flex-start;
+      }
+      #noBtn {
+        min-height: 44px;
+        padding: 0.7rem 1.15rem;
+        font-size: 0.8rem;
+      }
+      .flower-wrap {
+        width: 11rem;
+        height: 13rem;
+      }
+      .orbit-ring {
+        width: 14rem;
+        height: 14rem;
+      }
+      .orbit-ring-reverse {
+        width: 11.5rem;
+        height: 11.5rem;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .flower-wrap, .flower-main, .flower-side, .flower-sparkle,
+      .orbit-ring, .orbit-ring-reverse {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    .heart-beat-icon {
+      animation: heartBeat 2.5s infinite;
+    }
+
+    /* Smooth page reveal */
+    .fade-enter {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-enter-active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Scrollbar aesthetics */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 117, 160, 0.3);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-between min-h-screen px-4 py-6 md:py-10">
+
+  <!-- Particle Effect Canvas Background -->
+  <canvas id="fxCanvas"></canvas>
+
+  <!-- Top Navigation Bar -->
+  <header class="w-full max-w-4xl flex items-center justify-between mb-6 z-10">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-pink-400 border border-pink-500/30">
+        <span class="heart-beat-icon text-lg">💖</span>
+      </div>
+      <span class="text-xs md:text-sm font-bold tracking-widest uppercase text-pink-200/80">Special Gift • 20/10</span>
+    </div>
+    <div class="px-4 py-1.5 rounded-full glass-card text-xs text-pink-200/90 border border-pink-400/20 shadow-inner">
+      <span>Gửi cô gái tuyệt vời ✨</span>
+    </div>
+  </header>
+
+  <!-- Main Display Card -->
+  <main class="w-full max-w-4xl glass-card relative z-10 overflow-hidden my-auto p-6 md:p-12 transition-all duration-500">
+    
+    <!-- SECTION 1: INTERACTIVE HERO QUESTION -->
+    <section id="heroSection" class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+      
+      <!-- Text & Prompt Column -->
+      <div class="md:col-span-7 flex flex-col items-center md:items-start text-center md:text-left">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-300 text-xs font-semibold mb-4">
+          <span class="w-2 h-2 rounded-full bg-pink-400 animate-ping"></span>
+          Một góc nhỏ dịu dàng dành cho bạn
+        </div>
+        
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 leading-tight">
+          Một chút <br>
+          <em class="shimmer-text not-italic font-normal italic">dịu dàng</em><br>
+          cho ngày 20/10.
+        </h1>
+        
+        <p class="text-pink-100/70 text-sm md:text-base leading-relaxed mb-6 max-w-md">
+          Chẳng phải điều gì quá lớn lao, chỉ là một chút bất ngờ nhỏ được gói ghép bằng tình cảm chân thành nhất. 🌷
+        </p>
+
+        <!-- The Big Question -->
+        <div class="w-full bg-pink-950/30 border border-pink-500/20 rounded-2xl p-4 md:p-5 mb-6 backdrop-blur-md">
+          <p class="text-base md:text-lg font-medium text-pink-100 mb-1">
+            Nhưng trước tiên… Bạn có ghét Bình không? 🥺
+          </p>
+          <p class="text-xs text-pink-300/60">Hãy trả lời thật lòng nhé (nếu bấm được nút "Có")!</p>
+        </div>
+
+        <!-- Button Actions Area -->
+        <div id="btnContainer" class="w-full flex flex-wrap items-center justify-center md:justify-start gap-4 min-h-[60px] relative">
+          <!-- Positive Action Button -->
+          <button id="yesBtn" class="btn-pink px-8 py-3.5 rounded-full text-sm md:text-base font-bold shadow-lg flex items-center gap-2 cursor-pointer">
+            <span>Không ghét đâu 💗</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+
+        <p id="pleaText" class="text-xs md:text-sm text-pink-300/80 italic mt-3 min-h-[20px] transition-opacity duration-300"></p>
+      </div>
+
+      <!-- Flower Art Graphic Column -->
+      <div class="md:col-span-5 flex flex-col items-center justify-center relative min-h-[280px] md:min-h-[360px]">
+        
+        <!-- Glowing Orbits -->
+        <div class="absolute w-64 h-64 md:w-80 md:h-80 rounded-full bg-pink-500/10 filter blur-3xl -z-10"></div>
+        <div class="orbit-ring absolute w-60 h-60 md:w-72 md:h-72 rounded-full"></div>
+        <div class="orbit-ring-reverse absolute w-48 h-48 md:w-56 md:h-56 rounded-full"></div>
+
+        <!-- CSS Animated Floral Graphic -->
+        <div class="flower-wrap relative w-48 h-56 md:w-56 md:h-64 flex items-center justify-center">
+          <svg class="flower-art" viewBox="0 0 300 360" role="img" aria-label="Bó hoa hồng màu hồng đang khẽ đung đưa" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="petalOuter" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffd5e4"/>
+                <stop offset="0.48" stop-color="#ff83b0"/>
+                <stop offset="1" stop-color="#d92e70"/>
+              </linearGradient>
+              <linearGradient id="petalLight" x1="0" y1="0" x2="0.9" y2="1">
+                <stop offset="0" stop-color="#fff0f5"/>
+                <stop offset="0.55" stop-color="#ff9abb"/>
+                <stop offset="1" stop-color="#f14f8c"/>
+              </linearGradient>
+              <linearGradient id="petalDeep" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff9abb"/>
+                <stop offset="1" stop-color="#a91552"/>
+              </linearGradient>
+              <linearGradient id="leafGradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#8ce0a3"/>
+                <stop offset="0.55" stop-color="#299b68"/>
+                <stop offset="1" stop-color="#14543f"/>
+              </linearGradient>
+              <linearGradient id="stemGradient" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#176345"/>
+                <stop offset="0.5" stop-color="#56bd7d"/>
+                <stop offset="1" stop-color="#15503a"/>
+              </linearGradient>
+              <radialGradient id="flowerCenter" cx="35%" cy="25%" r="80%">
+                <stop offset="0" stop-color="#ffcfdf"/>
+                <stop offset="0.5" stop-color="#ff6f9e"/>
+                <stop offset="1" stop-color="#a9124d"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Stems and leaves are drawn behind the blooms. -->
+            <g stroke="url(#stemGradient)" stroke-width="5" stroke-linecap="round" fill="none">
+              <path d="M148 150 C143 208 151 258 150 326"/>
+              <path d="M104 185 C113 231 129 274 151 326"/>
+              <path d="M205 195 C189 242 174 286 151 326"/>
+            </g>
+            <g fill="url(#leafGradient)" stroke="#a8f0b8" stroke-opacity=".38" stroke-width="1.2">
+              <path d="M140 224 C103 185 68 194 72 211 C87 239 116 242 140 224Z"/>
+              <path d="M158 250 C189 211 224 218 225 235 C215 261 184 267 158 250Z"/>
+              <path d="M128 276 C96 253 76 266 84 282 C98 301 118 294 128 276Z"/>
+              <path d="M169 292 C190 267 214 279 208 294 C197 312 180 306 169 292Z"/>
+            </g>
+            <g stroke="#c0f7c8" stroke-opacity=".5" stroke-width="1.4" fill="none" stroke-linecap="round">
+              <path d="M138 222 Q109 214 82 207"/>
+              <path d="M161 249 Q190 239 216 231"/>
+              <path d="M127 276 Q107 273 91 274"/>
+              <path d="M170 291 Q189 291 201 289"/>
+            </g>
+
+            <!-- Small companion blossoms. -->
+            <g class="flower-side" transform="translate(91 177)">
+              <g fill="url(#petalLight)" stroke="#ffd7e5" stroke-width="1">
+                <ellipse cx="0" cy="-12" rx="8" ry="14"/>
+                <ellipse cx="0" cy="-12" rx="8" ry="14" transform="rotate(72)"/>
+                <ellipse cx="0" cy="-12" rx="8" ry="14" transform="rotate(144)"/>
+                <ellipse cx="0" cy="-12" rx="8" ry="14" transform="rotate(216)"/>
+                <ellipse cx="0" cy="-12" rx="8" ry="14" transform="rotate(288)"/>
+              </g>
+              <circle r="7" fill="#f4b84d"/>
+              <circle r="3" fill="#fff0b8"/>
+            </g>
+            <g class="flower-side" transform="translate(211 188) scale(.9)">
+              <g fill="url(#petalOuter)" stroke="#ffc5d9" stroke-width="1">
+                <ellipse cx="0" cy="-13" rx="9" ry="15"/>
+                <ellipse cx="0" cy="-13" rx="9" ry="15" transform="rotate(72)"/>
+                <ellipse cx="0" cy="-13" rx="9" ry="15" transform="rotate(144)"/>
+                <ellipse cx="0" cy="-13" rx="9" ry="15" transform="rotate(216)"/>
+                <ellipse cx="0" cy="-13" rx="9" ry="15" transform="rotate(288)"/>
+              </g>
+              <circle r="7" fill="#f4b84d"/>
+              <circle r="3" fill="#fff0b8"/>
+            </g>
+
+            <!-- Main rose: multiple soft petal layers instead of a flat emoji. -->
+            <g class="flower-main" transform="translate(150 124)">
+              <ellipse cx="0" cy="7" rx="58" ry="48" fill="#941746" opacity=".22"/>
+              <g fill="url(#petalOuter)" stroke="#ffb5ce" stroke-opacity=".7" stroke-width="1.2">
+                <path d="M0 19 C-42 10 -57 -20 -39 -43 C-22 -63 -5 -41 0 -23 C9 -47 30 -58 43 -35 C59 -8 31 14 0 19Z"/>
+                <path d="M0 19 C-42 10 -57 -20 -39 -43 C-22 -63 -5 -41 0 -23 C9 -47 30 -58 43 -35 C59 -8 31 14 0 19Z" transform="rotate(72)"/>
+                <path d="M0 19 C-42 10 -57 -20 -39 -43 C-22 -63 -5 -41 0 -23 C9 -47 30 -58 43 -35 C59 -8 31 14 0 19Z" transform="rotate(144)"/>
+                <path d="M0 19 C-42 10 -57 -20 -39 -43 C-22 -63 -5 -41 0 -23 C9 -47 30 -58 43 -35 C59 -8 31 14 0 19Z" transform="rotate(216)"/>
+                <path d="M0 19 C-42 10 -57 -20 -39 -43 C-22 -63 -5 -41 0 -23 C9 -47 30 -58 43 -35 C59 -8 31 14 0 19Z" transform="rotate(288)"/>
+              </g>
+              <g fill="url(#petalLight)" stroke="#fff0f5" stroke-opacity=".75" stroke-width="1">
+                <path d="M0 13 C-29 6 -37 -16 -22 -31 C-10 -43 -2 -27 0 -15 C8 -32 22 -38 31 -20 C41 0 19 13 0 13Z" transform="rotate(20) scale(.94)"/>
+                <path d="M0 13 C-29 6 -37 -16 -22 -31 C-10 -43 -2 -27 0 -15 C8 -32 22 -38 31 -20 C41 0 19 13 0 13Z" transform="rotate(140) scale(.94)"/>
+                <path d="M0 13 C-29 6 -37 -16 -22 -31 C-10 -43 -2 -27 0 -15 C8 -32 22 -38 31 -20 C41 0 19 13 0 13Z" transform="rotate(260) scale(.94)"/>
+              </g>
+              <path d="M-15 4 C-28 -9 -15 -27 0 -19 C14 -31 29 -13 17 -1 C9 8 -2 13 -8 4 C-13 -4 -1 -12 5 -5 C9 -1 4 4 1 1" fill="url(#flowerCenter)" stroke="#ffcada" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="-17" cy="-29" r="4" fill="#fff4f8" opacity=".75"/>
+            </g>
+
+            <!-- Fine sparkles and a small ribbon around the stems. -->
+            <g class="flower-sparkle" fill="#fff0f6">
+              <path d="M56 116 L60 127 L71 131 L60 135 L56 146 L52 135 L41 131 L52 127Z"/>
+              <path d="M238 105 L241 113 L249 116 L241 119 L238 127 L235 119 L227 116 L235 113Z" transform="scale(.82) translate(51 22)"/>
+              <circle cx="229" cy="147" r="3"/>
+              <circle cx="66" cy="171" r="2.5"/>
+            </g>
+            <path d="M133 280 Q150 291 168 280 L164 302 Q150 311 137 302Z" fill="#f05c91" stroke="#ffc2d7" stroke-width="1.5"/>
+            <path d="M150 291 L150 306" stroke="#ffe5ee" stroke-width="2" stroke-linecap="round"/>
+            <path d="M139 282 L127 270 L129 291 L143 298Z" fill="#dc3b78"/>
+            <path d="M161 282 L174 270 L171 292 L157 298Z" fill="#dc3b78"/>
+          </svg>
+        </div>
+
+        <p class="text-xs text-pink-200/50 font-serif italic mt-4">"Những điều chân thành luôn đẹp đẽ nhất."</p>
+      </div>
+    </section>
+
+    <!-- SECTION 2: SECRET LETTER / GREETING (HIDDEN BY DEFAULT) -->
+    <section id="letterSection" class="hidden fade-enter py-4">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="text-xs font-bold uppercase tracking-widest text-pink-400">Gửi Cô Gái Đáng Yêu</span>
+        <h2 class="text-3xl md:text-5xl font-serif font-medium mt-2 mb-4 text-pink-100">
+          Chúc bạn ngày 20/10<br>
+          <span class="shimmer-text font-serif italic">Thật Ngọt Ngào & Rạng Rỡ</span>
+        </h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-transparent via-pink-400 to-transparent mx-auto rounded-full"></div>
+      </div>
+
+      <!-- Letter Body -->
+      <article class="bg-pink-950/20 border border-pink-300/20 rounded-2xl p-6 md:p-10 shadow-2xl relative mb-8 backdrop-blur-md">
+        <div class="absolute top-4 right-4 text-pink-400/40 text-xl">✦</div>
+        <div class="space-y-4 text-pink-100/90 text-sm md:text-base leading-relaxed font-normal">
+          <p class="first-letter:text-4xl first-letter:font-serif first-letter:text-pink-400 first-letter:mr-2 first-letter:float-left">
+            Nhân ngày Phụ nữ Việt Nam 20/10, chúc bạn luôn giữ trên môi nụ cười tươi tắn nhất, luôn tự tin bước đi trên con đường mình chọn và nhận được thật nhiều yêu thương từ những người xung quanh.
+          </p>
+          <p>
+            Mong rằng mỗi ngày trôi qua với bạn đều tràn ngập những điều dịu dàng, áp lực công việc hay học tập luôn hóa nhẹ nhàng, và mỗi buổi tối trở về nhà đều cảm thấy bình yên trong lòng.
+          </p>
+          <p>
+            Cảm ơn bạn vì đã luôn xuất hiện một cách thật đáng yêu và mang lại năng lượng tích cực. Hãy luôn trân trọng bản thân, bởi vì bạn là một phiên bản duy nhất và cực kỳ đặc biệt! 🌟
+          </p>
+          <p class="pt-2 text-pink-200/80">
+            Món quà nhỏ này được Bình tự tay lập trình từng dòng code — dẫu có thể còn đơn sơ nhưng đong đầy sự chân thành. Hy vọng nó làm ngày hôm nay của bạn vui hơn một chút! ❤️
+          </p>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-pink-500/20 flex flex-col items-end">
+          <span class="handwriting text-2xl md:text-3xl text-pink-300">Thân thương,</span>
+          <span class="font-semibold text-pink-100 text-base mt-1">Bình Si Tình ♡</span>
+        </div>
+      </article>
+
+      <!-- Bottom Interactive Reset Button -->
+      <div class="flex flex-col items-center justify-center gap-3">
+        <button id="resetBtn" class="px-6 py-2.5 rounded-full bg-pink-500/20 hover:bg-pink-500/30 border border-pink-400/30 text-pink-200 text-xs md:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer">
+          <span>↺ Xem lại từ đầu</span>
+        </button>
+        <p id="toastMsg" class="text-xs text-pink-300/70 h-4"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Escape Button "Có 😈" created dynamically in DOM root to ensure 100% viewport freedom -->
+  <button id="noBtn" class="px-5 py-2.5 rounded-full text-sm font-bold border border-pink-400/30 bg-pink-950/80 text-pink-200 backdrop-blur-md">
+    Có 😈
+  </button>
+
+  <footer class="w-full text-center text-xs text-pink-300/40 py-4 z-10">
+    Lập trình bằng sự chân thành • © 20/10 Special Gift
+  </footer>
+
+  <!-- MAIN SCRIPT IMPLEMENTATION -->
+  <script>
+    /* ==========================================================================
+       1. PARTICLE CANVAS ANIMATION SYSTEM (Petals & Stars)
+       ========================================================================== */
+    const canvas = document.getElementById('fxCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    // Particle classes
+    class Petal {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = -20;
+        this.size = Math.random() * 8 + 6;
+        this.speedY = Math.random() * 1.5 + 0.8;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 2;
+        this.opacity = Math.random() * 0.6 + 0.3;
+        this.color = Math.random() > 0.5 ? '#ff75a0' : '#ffb3c6';
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += Math.sin(this.y * 0.01) + this.speedX;
+        this.rotation += this.rotSpeed;
+        if (this.y > height + 20) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+        
+        // Draw petal shape
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-this.size, -this.size, -this.size, this.size, 0, this.size * 1.5);
+        ctx.bezierCurveTo(this.size, this.size, this.size, -this.size, 0, 0);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    class Star {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2 + 0.5;
+        this.alpha = Math.random();
+        this.speed = Math.random() * 0.02 + 0.005;
+      }
+      update() {
+        this.alpha += this.speed;
+        if (this.alpha > 1 || this.alpha < 0.1) this.speed = -this.speed;
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = Math.abs(this.alpha);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = '#ffb3c6';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    const particles = [];
+    for (let i = 0; i < 25; i++) particles.push(new Petal());
+    for (let i = 0; i < 50; i++) particles.push(new Star());
+
+    function renderParticles() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(renderParticles);
+    }
+    renderParticles();
+
+
+    /* ==========================================================================
+       2. CRITICAL FIX: RUNAWAY "CÓ 😈" BUTTON (MOBILE & DESKTOP SAFE BOUNDS)
+       ========================================================================== */
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const pleaText = document.getElementById('pleaText');
+
+    const pleas = [
+      "Ơ... bấm nhầm đúng không nè? 🥺",
+      "Nút đó bị lỗi rồi, bấm nút bên trái đi! ✨",
+      "Đừng bấm Có mà, Bình buồn đó... 💔",
+      "Thử lại xem nào, nút này trơn lắm! 🏃‍♂️",
+      "Hông cho bấm đâuuuu! 🙈",
+      "Bắt tớ đi nếu bạn muốn! 💨",
+      "Nút 'Không ghét đâu' đẹp hơn nhiều kìa! 💕"
+    ];
+
+    let pleaIndex = 0;
+
+    // Keep the button close to the answer on desktop and on a clear second row on phones.
+    function placeButtonInitially() {
+      const container = document.getElementById('btnContainer');
+      const rect = container.getBoundingClientRect();
+      const yesRect = yesBtn.getBoundingClientRect();
+      const btnWidth = noBtn.offsetWidth || 104;
+      const btnHeight = noBtn.offsetHeight || 44;
+      const edge = 16;
+      let initialLeft;
+      let initialTop;
+
+      if (window.innerWidth < 640) {
+        initialLeft = rect.left + (rect.width - btnWidth) / 2;
+        initialTop = yesRect.bottom + 8;
+      } else if (yesRect.right + 14 + btnWidth <= window.innerWidth - edge) {
+        initialLeft = yesRect.right + 14;
+        initialTop = yesRect.top + (yesRect.height - btnHeight) / 2;
+      } else {
+        initialLeft = rect.left + Math.max(0, (rect.width - btnWidth) / 2);
+        initialTop = yesRect.bottom + 10;
+      }
+
+      moveNoButtonTo(initialLeft, initialTop);
+    }
+
+    // Keep the whole button inside the visible screen, including short phone screens.
+    function moveNoButtonTo(targetX, targetY) {
+      const btnWidth = noBtn.offsetWidth || 104;
+      const btnHeight = noBtn.offsetHeight || 44;
+      const padding = window.innerWidth < 640 ? 10 : 16;
+      const maxX = Math.max(padding, window.innerWidth - btnWidth - padding);
+      const maxY = Math.max(padding, window.innerHeight - btnHeight - padding);
+      const safeX = Math.min(Math.max(targetX, padding), maxX);
+      const safeY = Math.min(Math.max(targetY, padding), maxY);
+
+      noBtn.style.left = `${safeX}px`;
+      noBtn.style.top = `${safeY}px`;
+    }
+
+    // Pick a safe new spot: away from the pointer and without covering the main answer.
+    function evadePointer(pointerX, pointerY) {
+      const btnWidth = noBtn.offsetWidth || 104;
+      const btnHeight = noBtn.offsetHeight || 44;
+      const padding = window.innerWidth < 640 ? 10 : 16;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const maxX = Math.max(padding, vw - btnWidth - padding);
+      const maxY = Math.max(padding, vh - btnHeight - padding);
+      const yesRect = yesBtn.getBoundingClientRect();
+      const separation = window.innerWidth < 640 ? 118 : 150;
+      let newX = padding;
+      let newY = padding;
+      let bestScore = -Infinity;
+
+      for (let attempts = 0; attempts < 40; attempts++) {
+        const candidateX = padding + Math.random() * Math.max(0, maxX - padding);
+        const candidateY = padding + Math.random() * Math.max(0, maxY - padding);
+        const centerX = candidateX + btnWidth / 2;
+        const centerY = candidateY + btnHeight / 2;
+        const pointerDistance = Math.hypot(centerX - pointerX, centerY - pointerY);
+        const clearOfYes = !(
+          candidateX < yesRect.right + 12 && candidateX + btnWidth > yesRect.left - 12 &&
+          candidateY < yesRect.bottom + 12 && candidateY + btnHeight > yesRect.top - 12
+        );
+        const score = pointerDistance + (clearOfYes ? 260 : -260);
+
+        if (score > bestScore) {
+          bestScore = score;
+          newX = candidateX;
+          newY = candidateY;
+        }
+        if (pointerDistance >= separation && clearOfYes) {
+          newX = candidateX;
+          newY = candidateY;
+          break;
+        }
+      }
+
+      noBtn.classList.add('scared');
+      setTimeout(() => noBtn.classList.remove('scared'), 400);
+
+      pleaText.style.opacity = '0';
+      setTimeout(() => {
+        pleaText.innerText = pleas[pleaIndex % pleas.length];
+        pleaText.style.opacity = '1';
+        pleaIndex++;
+      }, 150);
+
+      moveNoButtonTo(newX, newY);
+    }
+
+    // Check distance between pointer and button
+    function checkProximityAndEvade(e) {
+      const touch = e.touches ? e.touches[0] : e;
+      if (!touch) return;
+
+      const px = touch.clientX;
+      const py = touch.clientY;
+
+      const rect = noBtn.getBoundingClientRect();
+      const btnCenterX = rect.left + rect.width / 2;
+      const btnCenterY = rect.top + rect.height / 2;
+
+      const dist = Math.hypot(px - btnCenterX, py - btnCenterY);
+
+      // Evade trigger radius (Mobile wider trigger)
+      const threshold = window.innerWidth < 640 ? 90 : 110;
+
+      if (dist < threshold) {
+        evadePointer(px, py);
+      }
+    }
+
+    // Attach listeners for touch, mouse, pointer
+    window.addEventListener('mousemove', checkProximityAndEvade);
+    window.addEventListener('touchmove', checkProximityAndEvade, { passive: true });
+    
+    // Direct click/tap attempt handlers
+    noBtn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      evadePointer(e.clientX, e.clientY);
+    });
+
+
+    /* ==========================================================================
+       3. INTERACTIVE SECTION SWITCHING & CONFETTI
+       ========================================================================== */
+    const heroSection = document.getElementById('heroSection');
+    const letterSection = document.getElementById('letterSection');
+    const resetBtn = document.getElementById('resetBtn');
+    const toastMsg = document.getElementById('toastMsg');
+
+    yesBtn.addEventListener('click', () => {
+      // Hide runaway button completely
+      noBtn.style.display = 'none';
+      
+      // Trigger Confetti Burst
+      triggerConfetti();
+
+      // Transition Hero section out & Letter section in
+      heroSection.style.opacity = '0';
+      heroSection.style.transform = 'translateY(-20px)';
+      heroSection.style.transition = 'all 0.4s ease-out';
+
+      setTimeout(() => {
+        heroSection.classList.add('hidden');
+        letterSection.classList.remove('hidden');
+        
+        // Trigger reveal
+        setTimeout(() => {
+          letterSection.classList.add('fade-enter-active');
+        }, 50);
+      }, 400);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      // Hide letter
+      letterSection.classList.remove('fade-enter-active');
+      
+      setTimeout(() => {
+        letterSection.classList.add('hidden');
+        heroSection.classList.remove('hidden');
+        
+        setTimeout(() => {
+          heroSection.style.opacity = '1';
+          heroSection.style.transform = 'translateY(0)';
+          
+          // Show runaway button again
+          noBtn.style.display = 'block';
+          placeButtonInitially();
+        }, 50);
+      }, 300);
+
+      toastMsg.innerText = "Đã quay lại trang đầu! 💕";
+      setTimeout(() => toastMsg.innerText = "", 3000);
+    });
+
+    // Confetti generator function
+    function triggerConfetti() {
+      const colors = ['#ff75a0', '#ffb3c6', '#ffffff', '#ffd0e1', '#e63975'];
+      for (let i = 0; i < 60; i++) {
+        const conf = document.createElement('div');
+        conf.style.position = 'fixed';
+        conf.style.left = Math.random() * 100 + 'vw';
+        conf.style.top = '-10px';
+        conf.style.width = Math.random() * 8 + 6 + 'px';
+        conf.style.height = Math.random() * 10 + 6 + 'px';
+        conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        conf.style.borderRadius = '3px';
+        conf.style.zIndex = '99999';
+        conf.style.pointerEvents = 'none';
+        
+        const duration = Math.random() * 2.5 + 2;
+        conf.style.transition = `transform ${duration}s cubic-bezier(0.25, 1, 0.5, 1), opacity ${duration}s`;
+        
+        document.body.appendChild(conf);
+
+        setTimeout(() => {
+          conf.style.transform = `translate3d(${(Math.random() - 0.5) * 200}px, ${window.innerHeight + 20}px, 0) rotate(${Math.random() * 720}deg)`;
+          conf.style.opacity = '0';
+        }, 20);
+
+        setTimeout(() => conf.remove(), duration * 1000);
+      }
+    }
+
+    // Initialize initial button placement after layout loads
+    window.addEventListener('load', () => {
+      setTimeout(placeButtonInitially, 100);
+    });
+
+    // Ensure button reposition on window orientation or size changes
+    window.addEventListener('resize', () => {
+      if (noBtn.style.display !== 'none') {
+        const rect = noBtn.getBoundingClientRect();
+        moveNoButtonTo(rect.left, rect.top);
+      }
+    });
+  </script>
+</body>
+</html>
